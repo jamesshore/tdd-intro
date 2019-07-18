@@ -1,13 +1,14 @@
 {
-  "name": "agile2019",
+  "name": "tdd-intro",
   "version": "1.0.0",
   "engines": {
     "node": "10.16.0"
   },
-  "description": "A sample Node application for demonstrating test-driven development (TDD).",
+  "description": "A workshop for learning test-driven development (TDD).",
   "main": "src/run.js",
   "scripts": {
-    "test": "build/scripts/run_build.js"
+    "test": "./build.sh",
+    "start": "./run.sh"
   },
   "author": "James Shore <jshore@jamesshore.com>",
   "license": "MIT",
