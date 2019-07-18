@@ -1,0 +1,23 @@
+{
+  "name": "agile2019",
+  "version": "1.0.0",
+  "engines": {
+    "node": "10.16.0"
+  },
+  "description": "A sample Node application for demonstrating test-driven development (TDD).",
+  "main": "src/run.js",
+  "scripts": {
+    "test": "build/scripts/run_build.js"
+  },
+  "author": "James Shore <jshore@jamesshore.com>",
+  "license": "MIT",
+  "dependencies": {
+    "eslint": "^6.0.1",
+    "gaze": "^1.1.3",
+    "glob": "^7.1.4",
+    "minimist": "^1.2.0",
+    "mocha": "^6.1.4",
+    "semver": "^6.2.0",
+    "shelljs": "^0.8.3"
+  }
+}

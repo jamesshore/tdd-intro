@@ -1,0 +1,8 @@
+Sound files by "Kastenfroch" and licensed with the CC0 license.
+https://creativecommons.org/publicdomain/zero/1.0/
+
+lint_error.mp3 - https://freesound.org/people/Kastenfrosch/sounds/162481/
+fail.m4a - https://freesound.org/people/Kastenfrosch/sounds/162473/
+success.mp3 - https://freesound.org/people/Kastenfrosch/sounds/162476/
+
+Note that fail.m4a is slightly edited from the original; a small delay at the beginning of the sound was removed.
