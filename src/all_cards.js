@@ -18,8 +18,8 @@ function allCombinations(cards) {
 
 	const [ firstCard, ...remainingCards ] = cards;
 	const allRemainingCardCombos = allCombinations(remainingCards);
-	const allFirstCardCombos = allRemainingCardCombos.map((combination) => {
-		return [ firstCard, ...combination ];
+	const allFirstCardCombos = allRemainingCardCombos.map((cards) => {
+		return [ firstCard, ...cards ];
 	});
 
 	return [ [firstCard], ...allFirstCardCombos, ...allRemainingCardCombos ];
