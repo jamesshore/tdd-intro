@@ -22,5 +22,5 @@ describe("Score", function() {
 });
 
 function createCards(...cardStrings) {
-	return cardStrings.map((cardString) => parse.card(cardString));
+	return cardStrings.map((cardString) => parse.card(cardString), false);
 }
