@@ -24,7 +24,8 @@ exports.calculate = function(allCards) {
 			scorePair(cards) +
 			straightScore +
 			flushScore +
-			scoreNobs(cards);
+			scoreNobs(cards) +
+			scoreFifteen(cards);
 	}, 0);
 };
 
@@ -53,4 +54,8 @@ function scoreFlush(previousFlushes, cards) {
 
 function scoreNobs(cards) {
 	return Card.isNobs(cards) ? 1 : 0;
+}
+
+function scoreFifteen(cards) {
+	return Card.isFifteen(cards) ? 2 : 0;
 }
