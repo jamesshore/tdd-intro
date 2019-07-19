@@ -45,6 +45,14 @@ module.exports = class Card {
 		}
 		return result;
 	}
+
+	static isFlush(cards) {
+		const faceCards = cards.filter((card) => !card._isStarter);
+		if (faceCards.length < 4) return false;
+
+		const desiredSuit = cards[0]._suit;
+		return cards.every((card) => card._suit === desiredSuit);
+	}
 };
 
 function numericRank(card) {
