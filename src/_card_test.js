@@ -107,6 +107,25 @@ describe("Card", function() {
 		assert.isFalse(Card.isNobs([ jackSpades, threeSpades, twoSpadesStarter ]), "extra cards should disqualify");
 	});
 
+	it("recognizes fifteens", function() {
+		const sevenSpades = createHandCard("7S");
+		const eightHearts = createHandCard("8H");
+		const eightHeartsStarter = createStarterCard("8H");
+		const fiveSpades = createHandCard("5S");
+		const fiveDiamonds = createHandCard("5D");
+		const fiveHearts = createHandCard("5H");
+		const fiveClubs = createHandCard("5C");
+
+		assert.isTrue(Card.isFifteen([ sevenSpades, eightHearts ]), "should recognize 15s");
+		assert.isFalse(Card.isFifteen([ sevenSpades, fiveSpades ]), "should recognize non-15s");
+		assert.isTrue(Card.isFifteen([ fiveSpades, fiveDiamonds, fiveHearts ]), "should allow more than two cards");
+		assert.isFalse(
+			Card.isFifteen([ fiveSpades, fiveDiamonds, fiveHearts, fiveClubs ]),
+			"should only consider the total, even if a subset of cards adds up to fifteen"
+		);
+		assert.isTrue(Card.isFifteen([ sevenSpades, eightHeartsStarter ]), "shouldn't care if cards are starters");
+	});
+
 });
 
 function createHandCard(cardStr) {

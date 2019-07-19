@@ -66,10 +66,20 @@ module.exports = class Card {
 		const targetSuit = starter._suit;
 		return face._rank === "J" && face._suit === targetSuit;
 	}
+
+	static isFifteen(cards) {
+		const total = cards.reduce((accumulator, card) => accumulator + value(card), 0);
+		return total === 15;
+	}
+
 };
 
 function numericRank(card) {
 	return NUMERIC_RANKS[card._rank];
+}
+
+function value(card) {
+	return Math.min(numericRank(card), 10);
 }
 
 function filterFaceCards(cards) {
