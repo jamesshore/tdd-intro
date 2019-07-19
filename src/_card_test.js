@@ -8,16 +8,22 @@ const Card = require("./card");
 describe("Card", function() {
 
 	it("recognizes pairs", function() {
-		const nineSpades = createCard("9S");
-		const nineDiamonds = createCard("9D");
-		const eightHearts = createCard("8H");
+		const nineSpades = createHandCard("9S");
+		const nineDiamonds = createHandCard("9D");
+		const nineDiamondsStarter = createStarterCard("9D");
+		const eightHearts = createHandCard("8H");
 
 		assert.isTrue(Card.isPair(nineSpades, nineDiamonds), "should recognize pairs");
+		assert.isTrue(Card.isPair(nineSpades, nineDiamondsStarter), "shouldn't care about starter status");
 		assert.isFalse(Card.isPair(nineSpades, eightHearts), "should recognize non-pairs");
 	});
 
 });
 
-function createCard(cardStr) {
-	return parse.card(cardStr);
+function createHandCard(cardStr) {
+	return parse.card(cardStr, false);
+}
+
+function createStarterCard(cardStr) {
+	return parse.card(cardStr, true);
 }
