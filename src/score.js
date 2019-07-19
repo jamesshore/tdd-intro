@@ -2,9 +2,10 @@
 "use strict";
 
 const Card = require("./card");
+const parse = require("./parse");
 
 exports.analyze = function(cardsString) {
-	return 19;
+	return exports.calculate(parse.allCards(cardsString));
 };
 
 exports.calculate = function(allCards) {
