@@ -9,6 +9,7 @@ exports.analyze = function(cardsString) {
 
 exports.calculate = function(allCards) {
 	const previousStraights = [];
+	const previousFlushes = [];
 	const combinations = allCards.combinations();
 	combinations.sort((a, b) => b.length - a.length);   // doing larger sets first makes the subset checks work
 
@@ -16,9 +17,14 @@ exports.calculate = function(allCards) {
 		const straightScore = scoreStraight(previousStraights, cards);
 		if (straightScore > 0) previousStraights.push(cards);
 
+		const flushScore = scoreFlush(previousFlushes, cards);
+		if (flushScore > 0) previousFlushes.push(cards);
+
 		return accumulator +
 			scorePair(cards) +
-			straightScore;
+			straightScore +
+			flushScore +
+			scoreNobs(cards);
 	}, 0);
 };
 
@@ -34,4 +40,17 @@ function scoreStraight(previousStraights, cards) {
 	if (alreadyScored) return 0;
 
 	return cards.length;
+}
+
+function scoreFlush(previousFlushes, cards) {
+	if (!Card.isFlush(cards)) return 0;
+
+	const alreadyScored = previousFlushes.some((previousFlush) => Card.isSubset(cards, previousFlush));
+	if (alreadyScored) return 0;
+
+	return cards.length;
+}
+
+function scoreNobs(cards) {
+	return Card.isNobs(cards) ? 1 : 0;
 }
