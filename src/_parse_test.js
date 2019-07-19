@@ -4,7 +4,7 @@
 const assert = require("chai").assert;
 const parse = require("./parse");
 const Card = require("./card");
-const Table = require("./table");
+const AllCards = require("./all_cards");
 
 describe("Parse", function() {
 
@@ -59,7 +59,7 @@ describe("Parse", function() {
 				new Card("4", "C", false),
 				new Card("5", "H", true),
 			];
-			const expected = new Table(cards);
+			const expected = new AllCards(cards);
 
 			const table = parse.allCards("AH2D3S4C5H");
 			assert.deepEqual(table, expected);

@@ -2,7 +2,7 @@
 "use strict";
 
 const Card = require("./card");
-const Table = require("./table");
+const AllCards = require("./all_cards");
 
 exports.allCards = function allCards(allCardsString) {
 	if(allCardsString.length !== 10) throw new Error(`Expected 5 cards but got ${allCardsString.length / 2}`);
@@ -11,7 +11,7 @@ exports.allCards = function allCards(allCardsString) {
 	const cards = groups.slice(1, 5).map((group) => exports.card(group, false));
 	cards[4] = exports.card(groups[5], true);
 
-	return new Table(cards);
+	return new AllCards(cards);
 };
 
 exports.card = function card(cardString, isStarter) {
