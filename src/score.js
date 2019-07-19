@@ -7,8 +7,19 @@ exports.analyze = function(cardsString) {
 	return 19;
 };
 
-exports.combo = function(cards) {
-	return scorePair(cards) + scoreStraight(cards);
+exports.calculate = function(allCards) {
+	const previousStraights = [];
+	const combinations = allCards.combinations();
+	combinations.sort((a, b) => b.length - a.length);   // doing larger sets first makes the subset checks work
+
+	return combinations.reduce((accumulator, cards) => {
+		const straightScore = scoreStraight(previousStraights, cards);
+		if (straightScore > 0) previousStraights.push(cards);
+
+		return accumulator +
+			scorePair(cards) +
+			straightScore;
+	}, 0);
 };
 
 function scorePair(cards) {
@@ -16,6 +27,11 @@ function scorePair(cards) {
 	return Card.isPair(cards[0], cards[1]) ? 2 : 0;
 }
 
-function scoreStraight(cards) {
-	return Card.isStraight(cards) ? cards.length : 0;
+function scoreStraight(previousStraights, cards) {
+	if (!Card.isStraight(cards)) return 0;
+
+	const alreadyScored = previousStraights.some((previousStraight) => Card.isSubset(cards, previousStraight));
+	if (alreadyScored) return 0;
+
+	return cards.length;
 }
