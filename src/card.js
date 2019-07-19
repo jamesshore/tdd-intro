@@ -47,14 +47,35 @@ module.exports = class Card {
 	}
 
 	static isFlush(cards) {
-		const faceCards = cards.filter((card) => !card._isStarter);
+		const faceCards = filterFaceCards(cards);
 		if (faceCards.length < 4) return false;
 
-		const desiredSuit = cards[0]._suit;
-		return cards.every((card) => card._suit === desiredSuit);
+		const targetSuit = cards[0]._suit;
+		return cards.every((card) => card._suit === targetSuit);
+	}
+
+	static isNobs(cards) {
+		const starterCards = filterStarterCards(cards);
+		if (starterCards.length !== 1) return false;
+		const starter = starterCards[0];
+
+		const faceCards = filterFaceCards(cards);
+		if (faceCards.length !== 1) return false;
+		const face = faceCards[0];
+
+		const targetSuit = starter._suit;
+		return face._rank === "J" && face._suit === targetSuit;
 	}
 };
 
 function numericRank(card) {
 	return NUMERIC_RANKS[card._rank];
+}
+
+function filterFaceCards(cards) {
+	return cards.filter((card) => !card._isStarter);
+}
+
+function filterStarterCards(cards) {
+	return cards.filter((card) => card._isStarter);
 }

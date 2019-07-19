@@ -92,6 +92,21 @@ describe("Card", function() {
 		);
 	});
 
+	it("recognizes nobs", function() {
+		const twoSpadesStarter = createStarterCard("2S");
+		const threeSpades = createHandCard("3S");
+		const jackSpades = createHandCard("JS");
+		const jackHearts = createHandCard("JH");
+
+		assert.isTrue(Card.isNobs([ jackSpades, twoSpadesStarter ]), "should recognize nobs");
+		assert.isFalse(Card.isNobs([ jackHearts, twoSpadesStarter ]), "should recognize non-nobs (wrong suit)");
+		assert.isFalse(Card.isNobs([ threeSpades, twoSpadesStarter ]), "should recognize non-nobs (not Jack)");
+		assert.isFalse(Card.isNobs([ jackSpades, threeSpades ]), "should recognize non-nobs (not starter)");
+		assert.isTrue(Card.isNobs([ twoSpadesStarter, jackSpades ]), "should allow cards in any order");
+		assert.isFalse(Card.isNobs([ twoSpadesStarter ]), "shouldn't die when no face cards found");
+		assert.isFalse(Card.isNobs([ jackSpades, threeSpades, twoSpadesStarter ]), "extra cards should disqualify");
+	});
+
 });
 
 function createHandCard(cardStr) {
