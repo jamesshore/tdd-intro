@@ -68,8 +68,8 @@ module.exports = class Card {
 	}
 
 	static isFifteen(cards) {
-		const total = cards.reduce((accumulator, card) => accumulator + value(card), 0);
-		return total === 15;
+		const totalValue = cards.reduce((accumulator, card) => accumulator + value(card), 0);
+		return totalValue === 15;
 	}
 
 	static isSubset(subset, superset) {
