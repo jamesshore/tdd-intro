@@ -59,7 +59,7 @@ incrementalTask("test", paths.testDependencies(), async () => {
 });
 
 task("lint", async () => {
-	let header = "Linting JavaScript: ";
+	let header = "Linting: ";
 	let footer = "";
 
 	const lintPromises = paths.lintFiles().map(async (lintFile) => {
