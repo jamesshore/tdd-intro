@@ -1,7 +1,7 @@
 // Copyright Titanium I.T. LLC.
 "use strict";
 
-const score = require("./score.js");
+const score = require("./score");
 const assert = require("chai").assert;
 
 describe("Score", function() {
