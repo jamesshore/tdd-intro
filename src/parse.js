@@ -15,7 +15,7 @@ exports.allCards = function allCards(allCardsString) {
 	return new Table(hand, starter);
 };
 
-exports.card = function card(cardString) {
+exports.card = function card(cardString, isStarter) {
 	let rank = cardString[0];
 	const suit = cardString[1];
 	if (rank === "0") rank = "10";
@@ -23,5 +23,5 @@ exports.card = function card(cardString) {
 	if (!Card.RANKS.includes(rank)) throw new Error(`Unknown rank '${rank}' in card '${cardString}'`);
 	if (!Card.SUITS.includes(suit)) throw new Error(`Unknown suit '${suit}' in card '${cardString}'`);
 
-	return new Card(rank, suit);
+	return new Card(rank, suit, isStarter);
 };

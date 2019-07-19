@@ -10,27 +10,32 @@ describe("Parse", function() {
 
 	describe("single card", function() {
 
+		it("passes through starter status", function() {
+			assert.deepEqual(parse.card("3C", true), new Card("3", "C", true), "should be starter");
+			assert.deepEqual(parse.card("3C", false), new Card("3", "C", false), "should not be starter");
+		});
+
 		it("parses rank", function() {
-			assert.deepEqual(parse.card("AC"), new Card("A", "C"));
-			assert.deepEqual(parse.card("2C"), new Card("2", "C"));
-			assert.deepEqual(parse.card("3C"), new Card("3", "C"));
-			assert.deepEqual(parse.card("4C"), new Card("4", "C"));
-			assert.deepEqual(parse.card("5C"), new Card("5", "C"));
-			assert.deepEqual(parse.card("6C"), new Card("6", "C"));
-			assert.deepEqual(parse.card("7C"), new Card("7", "C"));
-			assert.deepEqual(parse.card("8C"), new Card("8", "C"));
-			assert.deepEqual(parse.card("9C"), new Card("9", "C"));
-			assert.deepEqual(parse.card("0C"), new Card("10", "C"));
-			assert.deepEqual(parse.card("JC"), new Card("J", "C"));
-			assert.deepEqual(parse.card("QC"), new Card("Q", "C"));
-			assert.deepEqual(parse.card("KC"), new Card("K", "C"));
+			assert.deepEqual(parse.card("AC", false), new Card("A", "C", false));
+			assert.deepEqual(parse.card("2C", false), new Card("2", "C", false));
+			assert.deepEqual(parse.card("3C", false), new Card("3", "C", false));
+			assert.deepEqual(parse.card("4C", false), new Card("4", "C", false));
+			assert.deepEqual(parse.card("5C", false), new Card("5", "C", false));
+			assert.deepEqual(parse.card("6C", false), new Card("6", "C", false));
+			assert.deepEqual(parse.card("7C", false), new Card("7", "C", false));
+			assert.deepEqual(parse.card("8C", false), new Card("8", "C", false));
+			assert.deepEqual(parse.card("9C", false), new Card("9", "C", false));
+			assert.deepEqual(parse.card("0C", false), new Card("10", "C", false));
+			assert.deepEqual(parse.card("JC", false), new Card("J", "C", false));
+			assert.deepEqual(parse.card("QC", false), new Card("Q", "C", false));
+			assert.deepEqual(parse.card("KC", false), new Card("K", "C", false));
 		});
 
 		it("parses suit", function() {
-			assert.deepEqual(parse.card("3C"), new Card("3", "C"));
-			assert.deepEqual(parse.card("3S"), new Card("3", "S"));
-			assert.deepEqual(parse.card("3H"), new Card("3", "H"));
-			assert.deepEqual(parse.card("3D"), new Card("3", "D"));
+			assert.deepEqual(parse.card("3C", false), new Card("3", "C", false));
+			assert.deepEqual(parse.card("3S", false), new Card("3", "S", false));
+			assert.deepEqual(parse.card("3H", false), new Card("3", "H", false));
+			assert.deepEqual(parse.card("3D", false), new Card("3", "D", false));
 		});
 
 		it("throws exception if rank can't be parsed", function() {
@@ -69,3 +74,7 @@ describe("Parse", function() {
 	});
 
 });
+
+function createCard({ rank="A", suit="S", starter=false } = {}) {
+	return new Card(rank, suit, starter);
+}
