@@ -2,7 +2,7 @@
 
 This repository and its associated video series has everything you need to conduct an introductory workshop on test-driven development. It uses JavaScript and Node.js.
 
-To learn more, check out the "facilitator" branch using `git checkout facilitator` and re-open this README file.
+Facilitation guide will go here. (Work in progress)
 
 Alternatively, visit the project repository on github: [https://github.com/jamesshore/tdd-intro](https://github.com/jamesshore/tdd-intro)
 
