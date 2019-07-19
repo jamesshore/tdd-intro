@@ -4,4 +4,11 @@
 const score = require("../score");
 
 const arg = process.argv[2];
-process.stdout.write(score.analyze(arg) + "\n");
+try {
+	process.stdout.write(score.analyze(arg) + "\n");
+	process.exit(0);
+}
+catch (err) {
+	process.stderr.write(err.message + "\n");
+	process.exit(1);
+}
