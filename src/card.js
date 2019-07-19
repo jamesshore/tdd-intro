@@ -39,13 +39,12 @@ module.exports = class Card {
 		cards.sort((a, b) => numericRank(a) - numericRank(b));
 
 		let prevRank = numericRank(cards[0]);
-		let result = true;
 		for (let i = 1; i < cards.length; i++) {
 			const currentRank = numericRank(cards[i]);
-			if (currentRank - 1 !== prevRank) result = false;
+			if (currentRank - 1 !== prevRank) return false;
 			prevRank = currentRank;
 		}
-		return result;
+		return true;
 	}
 
 	static isFlush(cards) {
