@@ -27,8 +27,10 @@ module.exports = class Card {
 		this._isStarter = isStarter;
 	}
 
-	static isPair(card1, card2) {
-		return card1._rank === card2._rank;
+	static isPair(cards) {
+		if (cards.length !== 2) return false;
+
+		return cards[0]._rank === cards[1]._rank;
 	}
 
 	static isStraight(cards) {

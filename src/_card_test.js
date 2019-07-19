@@ -13,9 +13,13 @@ describe("Card", function() {
 		const nineDiamondsStarter = createStarterCard("9D");
 		const eightHearts = createHandCard("8H");
 
-		assert.isTrue(Card.isPair(nineSpades, nineDiamonds), "should recognize pairs");
-		assert.isTrue(Card.isPair(nineSpades, nineDiamondsStarter), "shouldn't care about starter status");
-		assert.isFalse(Card.isPair(nineSpades, eightHearts), "should recognize non-pairs");
+		assert.isTrue(Card.isPair([ nineSpades, nineDiamonds ]), "should recognize pairs");
+		assert.isTrue(Card.isPair([ nineSpades, nineDiamondsStarter ]), "shouldn't care about starter status");
+		assert.isFalse(Card.isPair([ nineSpades, eightHearts ]), "should recognize non-pairs");
+		assert.isFalse(
+			Card.isPair([ nineSpades, nineDiamonds, eightHearts ]),
+			"should ignore non-pairs with pairs inside"
+		);
 	});
 
 	it("recognizes straights", function() {

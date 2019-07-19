@@ -31,8 +31,7 @@ exports.calculate = function(allCards) {
 };
 
 function scorePair(cards) {
-	if (cards.length !== 2) return 0;
-	return Card.isPair(cards[0], cards[1]) ? 2 : 0;
+	return Card.isPair(cards) ? 2 : 0;
 }
 
 function scoreStraight(previousStraights, cards) {
