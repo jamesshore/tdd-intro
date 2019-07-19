@@ -64,8 +64,7 @@ module.exports = class Card {
 		if (faceCards.length !== 1) return false;
 		const face = faceCards[0];
 
-		const targetSuit = starter._suit;
-		return face._rank === "J" && face._suit === targetSuit;
+		return face._rank === "J" && face._suit === starter._suit;
 	}
 
 	static isFifteen(cards) {
