@@ -45,7 +45,7 @@ describe("Score", function() {
 
 		it("scores fifteens", function() {
 			assert.equal(score.calculate(createCards(["QH", "5D"])), 2, "should score fifteen");
-			assert.equal(score.calculate(createCards(["QH", "5D", "KH", "KC"])), 8, "should score multiple fifteens");
+			assert.equal(score.calculate(createCards(["QH", "5D", "KH"])), 4, "should score multiple fifteens");
 		});
 
 		it("scores nothing", function() {
