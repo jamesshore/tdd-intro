@@ -8,11 +8,10 @@ exports.allCards = function allCards(allCardsString) {
 	if(allCardsString.length !== 10) throw new Error(`Expected 5 cards but got ${allCardsString.length / 2}`);
 
 	const groups = /(..)(..)(..)(..)(..)/.exec(allCardsString);
-	const cards = groups.slice(1).map((group) => exports.card(group));
+	const cards = groups.slice(1, 5).map((group) => exports.card(group, false));
+	cards[4] = exports.card(groups[5], true);
 
-	const hand = cards.slice(0, 4);
-	const starter = exports.card(groups[5]);
-	return new Table(hand, starter);
+	return new Table(cards);
 };
 
 exports.card = function card(cardString, isStarter) {

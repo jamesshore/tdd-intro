@@ -3,9 +3,8 @@
 
 module.exports = class Table {
 
-	constructor(hand, starter) {
-		this.hand = hand;
-		this.starter = starter;
+	constructor(cards) {
+		this._cards = cards;
 	}
 
 };

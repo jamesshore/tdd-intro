@@ -52,14 +52,14 @@ describe("Parse", function() {
 	describe("all cards", function() {
 
 		it("converts to object", function() {
-			const hand = [
-				new Card("A", "H"),
-				new Card("2", "D"),
-				new Card("3", "S"),
-				new Card("4", "C"),
+			const cards = [
+				new Card("A", "H", false),
+				new Card("2", "D", false),
+				new Card("3", "S", false),
+				new Card("4", "C", false),
+				new Card("5", "H", true),
 			];
-			const starter = new Card("5", "H");
-			const expected = new Table(hand, starter);
+			const expected = new Table(cards);
 
 			const table = parse.allCards("AH2D3S4C5H");
 			assert.deepEqual(table, expected);
