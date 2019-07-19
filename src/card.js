@@ -72,6 +72,25 @@ module.exports = class Card {
 		return total === 15;
 	}
 
+	static isSubset(subset, superset) {
+		if (subset.length === 0) return true;
+		if (subset.length > superset.length) return false;
+
+		subset.sort(compare);
+		superset.sort(compare);
+
+		const firstMatchIndex = superset.findIndex((card) => equals(card, subset[0]));
+		if (firstMatchIndex === -1) return false;
+		if (firstMatchIndex + subset.length > superset.length) return false;
+
+		for (let i = 0; i < subset.length; i++) {
+			const subsetCard = subset[i];
+			const supersetCard = superset[i + firstMatchIndex];
+			if (!equals(subsetCard, supersetCard)) return false;
+		}
+		return true;
+	}
+
 };
 
 function numericRank(card) {
@@ -88,4 +107,21 @@ function filterFaceCards(cards) {
 
 function filterStarterCards(cards) {
 	return cards.filter((card) => card._isStarter);
+}
+
+function equals(a, b) {
+	return compare(a, b) === 0;
+}
+
+function compare(a, b) {
+	if (numericRank(a) > numericRank(b)) return 1;
+	if (numericRank(a) < numericRank(b)) return -1;
+
+	if (a._suit > b._suit) return 1;
+	if (a._suit < b._suit) return -1;
+
+	if (a._isStarter && !b._isStarter) return 1;
+	if (!a._isStarter && b._isStarter) return -1;
+
+	return 0;
 }

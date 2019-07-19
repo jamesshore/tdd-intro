@@ -126,6 +126,48 @@ describe("Card", function() {
 		assert.isTrue(Card.isFifteen([ sevenSpades, eightHeartsStarter ]), "shouldn't care if cards are starters");
 	});
 
+	it("recognizes subsets", function() {
+		const aceSpades = createHandCard("AS");
+		const twoSpades = createHandCard("2S");
+		const twoSpadesStarter = createStarterCard("2S");
+		const threeSpades = createHandCard("3S");
+		const threeHearts = createHandCard("3H");
+		const fourSpades = createHandCard("4S");
+
+		assert.isTrue(
+			Card.isSubset([ aceSpades, twoSpades ], [ aceSpades, twoSpades, threeHearts, fourSpades ]),
+			"should recognize subsets"
+		);
+		assert.isTrue(
+			Card.isSubset([ aceSpades, twoSpades, threeHearts ], [ aceSpades, twoSpades, threeHearts ]),
+			"identical sets should be subsets"
+		);
+		assert.isFalse(
+			Card.isSubset([ aceSpades ], [ twoSpades ]),
+			"different sets should not be subsets"
+		);
+		assert.isFalse(
+			Card.isSubset([ twoSpades, threeSpades ], [ aceSpades, twoSpades ]),
+			"subset that partially overlaps with superset shouldn't iterate past end of superset array"
+		);
+		assert.isTrue(
+			Card.isSubset([], [ aceSpades, twoSpades, threeHearts ]),
+			"empty sets should be subsets"
+		);
+		assert.isFalse(
+			Card.isSubset([ aceSpades, twoSpades, threeHearts. fourSpades ], [ aceSpades, twoSpades ]),
+			"supersets should not be subsets"
+		);
+		assert.isTrue(
+			Card.isSubset([ twoSpades, threeHearts, aceSpades ], [ aceSpades, twoSpades, threeHearts ]),
+			"should ignore order"
+		);
+		assert.isFalse(
+			Card.isSubset([ twoSpades, threeHearts, aceSpades ], [ twoSpadesStarter, threeHearts, aceSpades ]),
+			"should consider starter cards different than hand cards"
+		);
+	});
+
 });
 
 function createHandCard(cardStr) {
