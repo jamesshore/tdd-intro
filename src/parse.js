@@ -19,8 +19,8 @@ exports.card = function card(cardString, isStarter) {
 	const suit = cardString[1];
 	if (rank === "0") rank = "10";
 
-	if (!Card.RANKS.includes(rank)) throw new Error(`Unknown rank '${rank}' in card '${cardString}'`);
-	if (!Card.SUITS.includes(suit)) throw new Error(`Unknown suit '${suit}' in card '${cardString}'`);
+	if (!Card.isValidRank(rank)) throw new Error(`Unknown rank '${rank}' in card '${cardString}'`);
+	if (!Card.isValidSuit(suit)) throw new Error(`Unknown suit '${suit}' in card '${cardString}'`);
 
 	return new Card(rank, suit, isStarter);
 };

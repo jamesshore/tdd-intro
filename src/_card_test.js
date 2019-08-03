@@ -7,6 +7,16 @@ const Card = require("./card");
 
 describe("Card", function() {
 
+	it("knows if a rank is valid or not", function() {
+		assert.equal(Card.isValidRank("A"), true, "valid rank");
+		assert.equal(Card.isValidRank("M"), false, "invalid rank");
+	});
+
+	it("knows if a suit is valid or not", function() {
+		assert.equal(Card.isValidSuit("H"), true, "valid suit");
+		assert.equal(Card.isValidSuit("Q"), false, "invalid suit");
+	});
+
 	it("recognizes pairs", function() {
 		const nineSpades = createHandCard("9S");
 		const nineDiamonds = createHandCard("9D");

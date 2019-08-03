@@ -1,6 +1,7 @@
 // Copyright Titanium I.T. LLC.
 "use strict";
 
+const VALID_SUITS = ["C", "S", "H", "D"];
 const NUMERIC_RANKS = {
 	"A": 1,
 	"2": 2,
@@ -18,13 +19,19 @@ const NUMERIC_RANKS = {
 };
 
 module.exports = class Card {
-	static get RANKS() { return Object.keys(NUMERIC_RANKS); }
-	static get SUITS() { return ["C", "S", "H", "D"]; }
 
 	constructor(rank, suit, isStarter) {
 		this._rank = rank;
 		this._suit = suit;
 		this._isStarter = isStarter;
+	}
+
+	static isValidRank(rank) {
+		return Object.keys(NUMERIC_RANKS).includes(rank);
+	}
+
+	static isValidSuit(suit) {
+		return VALID_SUITS.includes(suit);
 	}
 
 	static isPair(cards) {
