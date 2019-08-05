@@ -82,4 +82,13 @@ Every unique combination of cards can be used. For example, a hand consisting of
 * 7 of Hearts + 8 of Hearts: adds up to 15 (2 points)
 * 7 of Hearts + 8 of Diamonds: adds up to 15 (2 points)
 
-Total score: 21 (a very good hand!)
+Total score: 21 (A very good hand!)
+
+However, subsets of straights and flushes may only be counted once. In other words, a four-card straight is only worth three points; it doesn't get counted as a three-card straight *and* a four-card straight. Same for flushes. For example, a hand consisting of 2, 3, 4, and 5 of Hearts, with a starter card of 6 of Hearts, would be scored as follows:
+
+* 2, 3, 4, 5, 6 of Hearts: straight (5 points)
+* 2, 3, 4, 5, 6 of Hearts: flush (5 points)
+* 2, 3, 4, 6 of Hearts: adds up to 15 (2 points)
+* 4, 5, 6 of Hearts: adds up to 15 (2 points)
+
+Total score: 14 (A good score, but not as amazing as you might expect from a straight flush.)

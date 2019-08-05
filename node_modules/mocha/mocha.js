@@ -1500,6 +1500,10 @@ function Mocha(options) {
     options.color = 'color' in options ? options.color : options.useColors;
   }
 
+  // Globals are passed in as options.global, with options.globals for backward compatibility.
+  options.globals = options.global || options.globals || [];
+  delete options.global;
+
   this.grep(options.grep)
     .fgrep(options.fgrep)
     .ui(options.ui)
@@ -1934,7 +1938,7 @@ Mocha.prototype._growl = growl.notify;
  * Specifies whitelist of variable names to be expected in global scope.
  *
  * @public
- * @see {@link https://mochajs.org/#--globals-names|CLI option}
+ * @see {@link https://mochajs.org/#-global-variable-name|CLI option}
  * @see {@link Mocha#checkLeaks}
  * @param {String[]|String} globals - Accepted global variable name(s).
  * @return {Mocha} this
@@ -1945,9 +1949,12 @@ Mocha.prototype._growl = growl.notify;
  * mocha.globals(['jQuery', 'MyLib']);
  */
 Mocha.prototype.globals = function(globals) {
-  this.options.globals = (this.options.globals || [])
+  this.options.globals = this.options.globals
     .concat(globals)
-    .filter(Boolean);
+    .filter(Boolean)
+    .filter(function(elt, idx, arr) {
+      return arr.indexOf(elt) === idx;
+    });
   return this;
 };
 
@@ -2295,6 +2302,11 @@ exports = module.exports = Base;
 var isatty = tty.isatty(1) && tty.isatty(2);
 
 /**
+ * Save log references to avoid tests interfering (see GH-3604).
+ */
+var consoleLog = console.log;
+
+/**
  * Enable coloring by default, except in the browser interface.
  */
 
@@ -2459,7 +2471,7 @@ var generateDiff = (exports.generateDiff = function(actual, expected) {
  *     Error property
  */
 exports.list = function(failures) {
-  console.log();
+  Base.consoleLog();
   failures.forEach(function(test, i) {
     // format
     var fmt =
@@ -2520,7 +2532,7 @@ exports.list = function(failures) {
       testTitle += str;
     });
 
-    console.log(fmt, i + 1, testTitle, msg, stack);
+    Base.consoleLog(fmt, i + 1, testTitle, msg, stack);
   });
 };
 
@@ -2575,7 +2587,7 @@ Base.prototype.epilogue = function() {
   var stats = this.stats;
   var fmt;
 
-  console.log();
+  Base.consoleLog();
 
   // passes
   fmt =
@@ -2583,26 +2595,26 @@ Base.prototype.epilogue = function() {
     color('green', ' %d passing') +
     color('light', ' (%s)');
 
-  console.log(fmt, stats.passes || 0, milliseconds(stats.duration));
+  Base.consoleLog(fmt, stats.passes || 0, milliseconds(stats.duration));
 
   // pending
   if (stats.pending) {
     fmt = color('pending', ' ') + color('pending', ' %d pending');
 
-    console.log(fmt, stats.pending);
+    Base.consoleLog(fmt, stats.pending);
   }
 
   // failures
   if (stats.failures) {
     fmt = color('fail', '  %d failing');
 
-    console.log(fmt, stats.failures);
+    Base.consoleLog(fmt, stats.failures);
 
     Base.list(this.failures);
-    console.log();
+    Base.consoleLog();
   }
 
-  console.log();
+  Base.consoleLog();
 };
 
 /**
@@ -2755,6 +2767,8 @@ function sameType(a, b) {
   return objToString.call(a) === objToString.call(b);
 }
 
+Base.consoleLog = consoleLog;
+
 Base.abstract = true;
 
 }).call(this,require('_process'))
@@ -2805,41 +2819,45 @@ function Doc(runner, options) {
       return;
     }
     ++indents;
-    console.log('%s<section class="suite">', indent());
+    Base.consoleLog('%s<section class="suite">', indent());
     ++indents;
-    console.log('%s<h1>%s</h1>', indent(), utils.escape(suite.title));
-    console.log('%s<dl>', indent());
+    Base.consoleLog('%s<h1>%s</h1>', indent(), utils.escape(suite.title));
+    Base.consoleLog('%s<dl>', indent());
   });
 
   runner.on(EVENT_SUITE_END, function(suite) {
     if (suite.root) {
       return;
     }
-    console.log('%s</dl>', indent());
+    Base.consoleLog('%s</dl>', indent());
     --indents;
-    console.log('%s</section>', indent());
+    Base.consoleLog('%s</section>', indent());
     --indents;
   });
 
   runner.on(EVENT_TEST_PASS, function(test) {
-    console.log('%s  <dt>%s</dt>', indent(), utils.escape(test.title));
+    Base.consoleLog('%s  <dt>%s</dt>', indent(), utils.escape(test.title));
     var code = utils.escape(utils.clean(test.body));
-    console.log('%s  <dd><pre><code>%s</code></pre></dd>', indent(), code);
+    Base.consoleLog('%s  <dd><pre><code>%s</code></pre></dd>', indent(), code);
   });
 
   runner.on(EVENT_TEST_FAIL, function(test, err) {
-    console.log(
+    Base.consoleLog(
       '%s  <dt class="error">%s</dt>',
       indent(),
       utils.escape(test.title)
     );
     var code = utils.escape(utils.clean(test.body));
-    console.log(
+    Base.consoleLog(
       '%s  <dd class="error"><pre><code>%s</code></pre></dd>',
       indent(),
       code
     );
-    console.log('%s  <dd class="error">%s</dd>', indent(), utils.escape(err));
+    Base.consoleLog(
+      '%s  <dd class="error">%s</dd>',
+      indent(),
+      utils.escape(err)
+    );
   });
 }
 
@@ -2917,7 +2935,7 @@ function Dot(runner, options) {
   });
 
   runner.once(EVENT_RUN_END, function() {
-    console.log();
+    process.stdout.write('\n');
     self.epilogue();
   });
 }
@@ -3677,7 +3695,7 @@ function Landing(runner, options) {
 
   runner.once(EVENT_RUN_END, function() {
     cursor.show();
-    console.log();
+    process.stdout.write('\n');
     self.epilogue();
   });
 }
@@ -3735,7 +3753,7 @@ function List(runner, options) {
   var n = 0;
 
   runner.on(EVENT_RUN_BEGIN, function() {
-    console.log();
+    Base.consoleLog();
   });
 
   runner.on(EVENT_TEST_BEGIN, function(test) {
@@ -3744,7 +3762,7 @@ function List(runner, options) {
 
   runner.on(EVENT_TEST_PENDING, function(test) {
     var fmt = color('checkmark', '  -') + color('pending', ' %s');
-    console.log(fmt, test.fullTitle());
+    Base.consoleLog(fmt, test.fullTitle());
   });
 
   runner.on(EVENT_TEST_PASS, function(test) {
@@ -3753,12 +3771,12 @@ function List(runner, options) {
       color('pass', ' %s: ') +
       color(test.speed, '%dms');
     cursor.CR();
-    console.log(fmt, test.fullTitle(), test.duration);
+    Base.consoleLog(fmt, test.fullTitle(), test.duration);
   });
 
   runner.on(EVENT_TEST_FAIL, function(test) {
     cursor.CR();
-    console.log(color('fail', '  %d) %s'), ++n, test.fullTitle());
+    Base.consoleLog(color('fail', '  %d) %s'), ++n, test.fullTitle());
   });
 
   runner.once(EVENT_RUN_END, self.epilogue.bind(self));
@@ -4286,7 +4304,7 @@ function Progress(runner, options) {
 
   // tests started
   runner.on(EVENT_RUN_BEGIN, function() {
-    console.log();
+    process.stdout.write('\n');
     cursor.hide();
   });
 
@@ -4319,7 +4337,7 @@ function Progress(runner, options) {
   // and the failures if any
   runner.once(EVENT_RUN_END, function() {
     cursor.show();
-    console.log();
+    process.stdout.write('\n');
     self.epilogue();
   });
 }
@@ -4381,24 +4399,24 @@ function Spec(runner, options) {
   }
 
   runner.on(EVENT_RUN_BEGIN, function() {
-    console.log();
+    Base.consoleLog();
   });
 
   runner.on(EVENT_SUITE_BEGIN, function(suite) {
     ++indents;
-    console.log(color('suite', '%s%s'), indent(), suite.title);
+    Base.consoleLog(color('suite', '%s%s'), indent(), suite.title);
   });
 
   runner.on(EVENT_SUITE_END, function() {
     --indents;
     if (indents === 1) {
-      console.log();
+      Base.consoleLog();
     }
   });
 
   runner.on(EVENT_TEST_PENDING, function(test) {
     var fmt = indent() + color('pending', '  - %s');
-    console.log(fmt, test.title);
+    Base.consoleLog(fmt, test.title);
   });
 
   runner.on(EVENT_TEST_PASS, function(test) {
@@ -4408,19 +4426,19 @@ function Spec(runner, options) {
         indent() +
         color('checkmark', '  ' + Base.symbols.ok) +
         color('pass', ' %s');
-      console.log(fmt, test.title);
+      Base.consoleLog(fmt, test.title);
     } else {
       fmt =
         indent() +
         color('checkmark', '  ' + Base.symbols.ok) +
         color('pass', ' %s') +
         color(test.speed, ' (%dms)');
-      console.log(fmt, test.title, test.duration);
+      Base.consoleLog(fmt, test.title, test.duration);
     }
   });
 
   runner.on(EVENT_TEST_FAIL, function(test) {
-    console.log(indent() + color('fail', '  %d) %s'), ++n, test.title);
+    Base.consoleLog(indent() + color('fail', '  %d) %s'), ++n, test.title);
   });
 
   runner.once(EVENT_RUN_END, self.epilogue.bind(self));
@@ -4877,7 +4895,7 @@ XUnit.prototype.write = function(line) {
   } else if (typeof process === 'object' && process.stdout) {
     process.stdout.write(line + '\n');
   } else {
-    console.log(line);
+    Base.consoleLog(line);
   }
 };
 
@@ -7854,32 +7872,41 @@ function isHiddenOnUnix(pathname) {
  *
  * @public
  * @memberof Mocha.utils
- * @todo Fix extension handling
  * @param {string} filepath - Base path to start searching from.
- * @param {string[]} extensions - File extensions to look for.
- * @param {boolean} recursive - Whether to recurse into subdirectories.
+ * @param {string[]} [extensions=[]] - File extensions to look for.
+ * @param {boolean} [recursive=false] - Whether to recurse into subdirectories.
  * @return {string[]} An array of paths.
  * @throws {Error} if no files match pattern.
  * @throws {TypeError} if `filepath` is directory and `extensions` not provided.
  */
 exports.lookupFiles = function lookupFiles(filepath, extensions, recursive) {
+  extensions = extensions || [];
+  recursive = recursive || false;
   var files = [];
   var stat;
 
   if (!fs.existsSync(filepath)) {
-    if (fs.existsSync(filepath + '.js')) {
-      filepath += '.js';
+    var pattern;
+    if (glob.hasMagic(filepath)) {
+      // Handle glob as is without extensions
+      pattern = filepath;
     } else {
-      // Handle glob
-      files = glob.sync(filepath);
-      if (!files.length) {
-        throw createNoFilesMatchPatternError(
-          'Cannot find any files matching pattern ' + exports.dQuote(filepath),
-          filepath
-        );
-      }
-      return files;
+      // glob pattern e.g. 'filepath+(.js|.ts)'
+      var strExtensions = extensions
+        .map(function(v) {
+          return '.' + v;
+        })
+        .join('|');
+      pattern = filepath + '+(' + strExtensions + ')';
     }
+    files = glob.sync(pattern, {nodir: true});
+    if (!files.length) {
+      throw createNoFilesMatchPatternError(
+        'Cannot find any files matching pattern ' + exports.dQuote(filepath),
+        filepath
+      );
+    }
+    return files;
   }
 
   // Handle file
@@ -7910,7 +7937,7 @@ exports.lookupFiles = function lookupFiles(filepath, extensions, recursive) {
       // ignore error
       return;
     }
-    if (!extensions) {
+    if (!extensions.length) {
       throw createMissingArgumentError(
         util.format(
           'Argument %s required when argument %s is a directory',
@@ -8006,7 +8033,8 @@ exports.stackTraceFilter = function() {
   function isMochaInternal(line) {
     return (
       ~line.indexOf('node_modules' + slash + 'mocha' + slash) ||
-      ~line.indexOf(slash + 'mocha.js')
+      ~line.indexOf(slash + 'mocha.js') ||
+      ~line.indexOf(slash + 'mocha.min.js')
     );
   }
 
@@ -18069,7 +18097,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":88,"_process":69,"inherits":56}],90:[function(require,module,exports){
 module.exports={
   "name": "mocha",
-  "version": "6.1.4",
+  "version": "6.2.0",
   "homepage": "https://mochajs.org/",
   "notifyLogo": "https://ibin.co/4QuRuGjXvl36.png"
 }
