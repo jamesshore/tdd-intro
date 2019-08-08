@@ -1,10 +1,10 @@
 # TDD Intro
 
-This repository and its associated video series has everything you need to conduct an introductory workshop on test-driven development. It uses JavaScript and Node.js.
+This repository and its [associated video series](https://www.letscodejavascript.com/v3/episodes/tdd_intro) has everything you need to conduct an introductory workshop on test-driven development. It uses JavaScript and Node.js.
 
-Facilitation guide will go here. (Work in progress)
+To conduct this workshop with a group, [read the facilitation guide here](facilitator/readme.md).
 
-Alternatively, visit the project repository on github: [https://github.com/jamesshore/tdd-intro](https://github.com/jamesshore/tdd-intro)
+To conduct this workshop as a self-study session, start with episode 1 of the video series: [letscodejavascript.com/v3/comments/tdd_intro/1](https://www.letscodejavascript.com/v3/comments/tdd_intro/1). It will walk you through everything you need.
 
 
 ## Prerequisites
@@ -13,6 +13,16 @@ You need the following programs to use this repository:
 
 * [Git](https://git-scm.com/)
 * [Node.js](https://nodejs.org/en/)
+
+
+## Branches
+
+The following branches are available in this repository:
+
+* facilitator: Facilitator guide and materials (in the `facilitator` directory).
+* start_here: The starting point for the example exercise in the video series.
+* continue_here: Where the video series ends and the viewer is prompted to continue on there own.
+* completed: The finished program.
 
 
 ## Running the Program
