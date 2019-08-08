@@ -142,12 +142,12 @@ Although there's many valid paths to completion, this is the most straightforwar
 1. Solve the "parse all cards" problem.
 2. Break down the "score" half of the program into multiple pieces.
 3. Solve each piece of "score" (in any order):
-	a. Score pairs of cards
-	b. Score straights
-	c. Score flushes
-	d. Score Jacks ("nobs")
-	e. Score 15s
-	f. Score multiple combinations
+	1. Score pairs of cards
+	2. Score straights
+	3. Score flushes
+	4. Score Jacks ("nobs")
+	5. Score 15s
+	6. Score multiple combinations
 4. Connect it all together.
 
 
