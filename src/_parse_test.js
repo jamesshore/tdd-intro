@@ -71,6 +71,10 @@ describe("Parse", function() {
 			assert.throws(() => parse.allCards("JH5D5S5C5"), "Expected 5 cards but got 4.5");
 		});
 
+		it("fails gracefully if no parameter is provided", function() {
+			assert.throws(() => parse.allCards(undefined), "Expected 5 cards but got nothing");
+		});
+
 	});
 
 });
