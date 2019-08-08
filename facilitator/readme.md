@@ -75,7 +75,6 @@ The workshop is split into two parts:
 1. Understanding TDD (45 min)
 	1. First three videos (25 min)
 	2. Two exercises (10-15 min)
-
 2. Practicing TDD (2 hr 15 min+)
 	1. Final video (45 min)
 	2. Several coding exercises (90+ min)
