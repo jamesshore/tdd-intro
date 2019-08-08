@@ -48,7 +48,7 @@ In addition to this facilitator guide, the following materials are available:
 
 ## Preparing for the Workshop
 
-The workshop can be scheduled for a half day (three hours) or a full day. Prior to the workshop, prepare the venue and ensure participants' computers are ready.
+The workshop can be scheduled for a half day (three hours) or a full day. First, watch all the videos and familiarize yourself with this facilitator guide. Prior to the workshop, prepare the venue and ensure participants' computers are ready.
 
 If you don't have a programming background yourself, consider partnering with a senior developer or tech lead in your company. This is optional, but helpful.
 
